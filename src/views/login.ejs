@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/boot/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="/assets/css/signin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+<main class="form-signin">
+    <form method="post">
+        <div class="form-floating">
+            <input type="text" name="username" required class="form-control" placeholder="Username">
+            <label>Username</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" name="password" required class="form-control" placeholder="Password">
+            <label>Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <a class="w-100 btn btn-lg btn-primary mt-1" href="/register">Register</a>
+    </form>
+</main>
+</body>
+</html>

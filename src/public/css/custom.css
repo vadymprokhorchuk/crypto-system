@@ -1,0 +1,49 @@
+table.dataTable tbody tr.selected {
+    background-color: #acbad4 !important;
+    --bs-table-bg: #acbad4 !important;
+    color: black;
+}
+
+.mirror_red{
+    background-color: rgba(232,43,59,0.27) !important;
+}
+
+.mirror_green{
+    background-color: rgba(36,200,36,0.27) !important;
+}
+
+.saturated_red{
+    background-color: #e82b3b !important;
+}
+
+.saturated_green{
+    background-color: #24c824 !important;
+}
+
+.table_bottom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table_top{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.right{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+
+.dataTables_processing{
+    z-index: 100;
+}

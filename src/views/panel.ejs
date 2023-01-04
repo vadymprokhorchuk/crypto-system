@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wallet</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/boot/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/signin.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container">
+    <main>
+        <div class="py-5 text-center">
+            <p class="">Main wallet</p>
+            <h2><span id="balance">???</span> BNB</h2>
+            <p style="cursor: pointer" onclick="navigator.clipboard.writeText(this.getAttribute('address'))" address='<%= user.wallet.address %>'><%= user.wallet.address.slice(0, 5) %>...<%= user.wallet.address.slice(-4) %></p>
+            <button type="button" class="btn btn-success mx-0 mb-2">Send</button>
+            <a type="button" class="btn btn-danger mx-0 mb-2" href="/logout">Exit</a>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#qrModal" class="btn btn-success mx-0 mb-2" data-bs-toggle="modal">Receive</button>
+            <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Receive</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<%= user.wallet.address %>&chld=L|1&choe=UTF-8">
+                            <input class="text-center form-control" type="text" value="<%= user.wallet.address %>" disabled readonly>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-5" style="
+    display: flex;
+    justify-content: center;
+">
+            <div class="col-md-1 col-lg-8 ">
+                <ul class="list-group mb-3" id="transactions">
+                </ul>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    function updateBalance(){
+        fetch('/api/wallet/balance', {
+            method: 'GET',
+        }).then(async response => {
+            const object = await response.json()
+            if (object.balance){
+                const sliced = object.balance.toString().slice(0, 6)
+                document.getElementById('balance').innerText = sliced
+            }
+        })
+    }
+
+    function updateTransactions(){
+        fetch('/api/wallet/transactions', {
+            method: 'GET',
+        }).then(async response => {
+            const object = await response.json()
+            console.log(object)
+            if (object.transactions){
+                const txBlock = document.getElementById('transactions')
+                for (const transaction of object.transactions){
+                    let action = 'Unknown'
+                    if (transaction.to_address.toLowerCase() === `<%= user.wallet.address %>`.toLowerCase()){
+                        action = `Received`
+                    }else{
+                        action = `Sent`
+                    }
+                    txBlock.insertAdjacentHTML('afterend', `
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">${action}</h6>
+                            <small class="text-muted"><a target="_blank" href="https://bscscan.com/tx/${transaction.tx_hash}">${transaction.tx_hash}</a></small>
+                        </div>
+                        <span class="text-muted">$${transaction.value_quote.toFixed(2)}</span>
+                    </li>
+                    `)
+                }
+            }
+        })
+    }
+
+    updateBalance()
+    updateTransactions()
+    const update = window.setInterval(function(){
+        updateBalance()
+    }, 5000);
+</script>
+</body>
+</html>

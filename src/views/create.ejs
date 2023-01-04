@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/boot/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/signin.css" rel="stylesheet">
+</head>
+<body class="text-center">
+<main class="mx-auto">
+    <div id="create">
+        <h1>Let's create your wallet!</h1>
+        <button type="button" id="createWallet" class="btn btn-success btn-lg" onclick="createWallet()">Create</button>
+    </div>
+    <div class="col-lg-6 col-md-8 mx-auto" id="save" style="display: none">
+        <h1>Save your seed phrase</h1>
+<!--        <input readonly type="text" class="form-control" id="privateKey">-->
+<!--        <a class="btn btn-success btn-lg" href="/panel">Done</a>-->
+        <form class="row gy-2 gx-3 align-items-center">
+            <div class="col-md-3 ">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">1</div>
+                    <input type="text" class="form-control" id="word_1">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">2</div>
+                    <input type="text" class="form-control" id="word_2">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">3</div>
+                    <input type="text" class="form-control" id="word_3">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">4</div>
+                    <input type="text" class="form-control" id="word_4">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">5</div>
+                    <input type="text" class="form-control" id="word_5">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">6</div>
+                    <input type="text" class="form-control" id="word_6">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">7</div>
+                    <input type="text" class="form-control" id="word_7">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">8</div>
+                    <input type="text" class="form-control" id="word_8">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">8</div>
+                    <input type="text" class="form-control" id="word_9">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">10</div>
+                    <input type="text" class="form-control" id="word_10">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">11</div>
+                    <input type="text" class="form-control" id="word_11">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="visually-hidden"></label>
+                <div class="input-group">
+                    <div class="input-group-text">12</div>
+                    <input type="text" class="form-control" id="word_12">
+                </div>
+            </div>
+        </form>
+        <a class="btn btn-success btn-lg" href="/panel">Done</a>
+    </div>
+</main>
+<script>
+    function createWallet(){
+        const button = document.getElementById('createWallet')
+        button.disabled = true
+        try{
+            fetch('/api/wallet/create', {
+                method: 'POST',
+            }).then(async response => {
+                const object = await response.json()
+                if (object.mnemonic){
+                    document.getElementById('create').style.display = 'none'
+                    const words = object.mnemonic.split(' ')
+                    for (let i = 0; i < words.length; i++){
+                        document.getElementById(`word_${i+1}`).value = words[i]
+                    }
+                    document.getElementById('save').style.display = 'block'
+                }
+            })
+        }catch (err){
+            button.disabled = false
+        }
+    }
+</script>
+</body>
+</html>
